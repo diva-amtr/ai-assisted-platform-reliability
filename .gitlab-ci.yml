@@ -1,0 +1,65 @@
+stages:
+  - build
+  - test
+  - docker
+
+variables:
+  DOCKER_TLS_CERTDIR: ""
+  DOCKER_DRIVER: overlay2
+
+default:
+  image: docker:25
+  services:
+    - docker:25-dind
+
+before_script:
+  - docker info
+  - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY"
+
+# -------------------------------
+# PYTHON SERVICE
+# -------------------------------
+
+build_platform_api:
+  stage: build
+  script:
+    - docker build -t $CI_REGISTRY_IMAGE/platform-api services/platform-api
+
+docker_platform_api:
+  stage: docker
+  script:
+    - docker push $CI_REGISTRY_IMAGE/platform-api
+  needs:
+    - build_platform_api
+
+# -------------------------------
+# JAVA SERVICE
+# -------------------------------
+
+build_java_service:
+  stage: build
+  script:
+    - docker build -t $CI_REGISTRY_IMAGE/java-service services/java-service
+
+docker_java_service:
+  stage: docker
+  script:
+    - docker push $CI_REGISTRY_IMAGE/java-service
+  needs:
+    - build_java_service
+
+# -------------------------------
+# DOTNET SERVICE
+# -------------------------------
+
+build_dotnet_service:
+  stage: build
+  script:
+    - docker build -t $CI_REGISTRY_IMAGE/dotnet-service services/dotnet-service
+
+docker_dotnet_service:
+  stage: docker
+  script:
+    - docker push $CI_REGISTRY_IMAGE/dotnet-service
+  needs:
+    - build_dotnet_service

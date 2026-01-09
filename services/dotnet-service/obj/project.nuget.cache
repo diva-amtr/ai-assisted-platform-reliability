@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "vwifTMctozg=",
+  "success": true,
+  "projectFilePath": "D:\\Projects\\DevOps\\ai-assisted-platform-reliability\\services\\dotnet-service\\dotnet-service.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\divaa\\.nuget\\packages\\microsoft.aspnetcore.openapi\\10.0.1\\microsoft.aspnetcore.openapi.10.0.1.nupkg.sha512",
+    "C:\\Users\\divaa\\.nuget\\packages\\microsoft.openapi\\2.0.0\\microsoft.openapi.2.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
