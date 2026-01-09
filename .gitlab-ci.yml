@@ -1,11 +1,6 @@
-before_script:
-  - echo "Registry: $CI_REGISTRY"
-  - echo "Image: $CI_REGISTRY_IMAGE"
-  - docker info
-  - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY"
-
 stages:
   - build
+  - test
   - docker
 
 variables:
@@ -28,14 +23,12 @@ before_script:
 build_platform_api:
   stage: build
   script:
-    - docker build -t $CI_REGISTRY_IMAGE/platform-api:latest services/platform-api
-    - docker build -t $CI_REGISTRY_IMAGE/platform-api:$CI_COMMIT_SHORT_SHA services/platform-api
+    - docker build -t $CI_REGISTRY_IMAGE/platform-api services/platform-api
 
 docker_platform_api:
   stage: docker
   script:
     - docker push $CI_REGISTRY_IMAGE/platform-api:latest
-    - docker push $CI_REGISTRY_IMAGE/platform-api:$CI_COMMIT_SHORT_SHA
   needs:
     - build_platform_api
 
@@ -46,14 +39,12 @@ docker_platform_api:
 build_java_service:
   stage: build
   script:
-    - docker build -t $CI_REGISTRY_IMAGE/java-service:latest services/java-service
-    - docker build -t $CI_REGISTRY_IMAGE/java-service:$CI_COMMIT_SHORT_SHA services/java-service
+    - docker build -t $CI_REGISTRY_IMAGE/java-service services/java-service
 
 docker_java_service:
   stage: docker
   script:
     - docker push $CI_REGISTRY_IMAGE/java-service:latest
-    - docker push $CI_REGISTRY_IMAGE/java-service:$CI_COMMIT_SHORT_SHA
   needs:
     - build_java_service
 
@@ -64,13 +55,11 @@ docker_java_service:
 build_dotnet_service:
   stage: build
   script:
-    - docker build -t $CI_REGISTRY_IMAGE/dotnet-service:latest services/dotnet-service
-    - docker build -t $CI_REGISTRY_IMAGE/dotnet-service:$CI_COMMIT_SHORT_SHA services/dotnet-service
+    - docker build -t $CI_REGISTRY_IMAGE/dotnet-service services/dotnet-service
 
 docker_dotnet_service:
   stage: docker
   script:
     - docker push $CI_REGISTRY_IMAGE/dotnet-service:latest
-    - docker push $CI_REGISTRY_IMAGE/dotnet-service:$CI_COMMIT_SHORT_SHA
   needs:
     - build_dotnet_service
