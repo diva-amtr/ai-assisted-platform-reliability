@@ -1,6 +1,4 @@
 stages:
-  - build
-  - test
   - docker
 
 variables:
@@ -20,52 +18,34 @@ before_script:
 # PYTHON SERVICE
 # -------------------------------
 
-build_platform_api:
-  stage: build
-  script:
-    - docker build -t $CI_REGISTRY_IMAGE/platform-api services/platform-api
-    - docker images -a
-
 docker_platform_api:
   stage: docker
   script:
-    - docker images -a
+    - docker build -t $CI_REGISTRY_IMAGE/platform-api:latest services/platform-api
+    - docker build -t $CI_REGISTRY_IMAGE/platform-api:$CI_COMMIT_SHORT_SHA services/platform-api
     - docker push $CI_REGISTRY_IMAGE/platform-api:latest
-  needs:
-    - build_platform_api
+    - docker push $CI_REGISTRY_IMAGE/platform-api:$CI_COMMIT_SHORT_SHA
 
 # -------------------------------
 # JAVA SERVICE
 # -------------------------------
 
-build_java_service:
-  stage: build
-  script:
-    - docker build -t $CI_REGISTRY_IMAGE/java-service services/java-service
-    - docker images -a
-
 docker_java_service:
   stage: docker
   script:
-    - docker images -a
+    - docker build -t $CI_REGISTRY_IMAGE/java-service:latest services/java-service
+    - docker build -t $CI_REGISTRY_IMAGE/java-service:$CI_COMMIT_SHORT_SHA services/java-service
     - docker push $CI_REGISTRY_IMAGE/java-service:latest
-  needs:
-    - build_java_service
+    - docker push $CI_REGISTRY_IMAGE/java-service:$CI_COMMIT_SHORT_SHA
 
 # -------------------------------
 # DOTNET SERVICE
 # -------------------------------
 
-build_dotnet_service:
-  stage: build
-  script:
-    - docker build -t $CI_REGISTRY_IMAGE/dotnet-service services/dotnet-service
-    - docker images -a
-
 docker_dotnet_service:
   stage: docker
   script:
-    - docker images -a
+    - docker build -t $CI_REGISTRY_IMAGE/dotnet-service:latest services/dotnet-service
+    - docker build -t $CI_REGISTRY_IMAGE/dotnet-service:$CI_COMMIT_SHORT_SHA services/dotnet-service
     - docker push $CI_REGISTRY_IMAGE/dotnet-service:latest
-  needs:
-    - build_dotnet_service
+    - docker push $CI_REGISTRY_IMAGE/dotnet-service:$CI_COMMIT_SHORT_SHA
