@@ -24,10 +24,12 @@ build_platform_api:
   stage: build
   script:
     - docker build -t $CI_REGISTRY_IMAGE/platform-api services/platform-api
+    - docker images -a
 
 docker_platform_api:
   stage: docker
   script:
+    - docker images -a
     - docker push $CI_REGISTRY_IMAGE/platform-api:latest
   needs:
     - build_platform_api
@@ -40,10 +42,12 @@ build_java_service:
   stage: build
   script:
     - docker build -t $CI_REGISTRY_IMAGE/java-service services/java-service
+    - docker images -a
 
 docker_java_service:
   stage: docker
   script:
+    - docker images -a
     - docker push $CI_REGISTRY_IMAGE/java-service:latest
   needs:
     - build_java_service
@@ -56,10 +60,12 @@ build_dotnet_service:
   stage: build
   script:
     - docker build -t $CI_REGISTRY_IMAGE/dotnet-service services/dotnet-service
+    - docker images -a
 
 docker_dotnet_service:
   stage: docker
   script:
+    - docker images -a
     - docker push $CI_REGISTRY_IMAGE/dotnet-service:latest
   needs:
     - build_dotnet_service
